@@ -16,7 +16,6 @@ std::unique_ptr<pqxx::connection> connect_db() {
 
         auto C = std::make_unique<pqxx::connection>(conn_string);
         if (C->is_open()) {
-            std::cout << "Connected to database: " << C->dbname() << std::endl;
         }
         else {
             std::cerr << "Could not open database" << std::endl;

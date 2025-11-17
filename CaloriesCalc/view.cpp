@@ -123,7 +123,7 @@ New_ingredient_data Console_view::get_new_ingredient_data() {
 }
 
 New_dish_data Console_view::get_new_dish_data() {
-    std::cout << "CREATE NEW DISH RECIPE-\n";
+    std::cout << "CREATE NEW DISH RECIPE\n";
     New_dish_data data;
     data.dish_name = get_string_input("Dish Name: ");
 
@@ -159,7 +159,7 @@ New_log_data Console_view::get_meal_log_data(pqxx::connection& C) {
 }
 
 std::string Console_view::get_date_for_summary(pqxx::connection& C) {
-    std::cout << "--- Daily Summary ---\n";
+    std::cout << "Daily Summary\n";
     return get_date_from_user(C);
 }
 

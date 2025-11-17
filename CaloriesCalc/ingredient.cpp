@@ -31,11 +31,10 @@ std::vector<Ingredient_data> Ingredient::find_by_name(pqxx::work& W, int user_id
     std::vector<Ingredient_data> results;
 
     pqxx::params p;
-    p.append(user_id);
     p.append("%" + name_query + "%");
 
     auto db_result = W.exec(
-        "SELECT * FROM \"Ingredient\" WHERE user_id = $1 AND name ILIKE $2",p);
+        "SELECT * FROM \"Ingredient\" WHERE  name ILIKE $1",p);
 
     for (auto row : db_result) {
         results.push_back({
