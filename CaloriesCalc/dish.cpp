@@ -16,13 +16,17 @@ bool Dish::create_dish(pqxx::work& W, int user_id, const std::string& dish_name,
         int dish_id = dish_res[0]["dish_id"].as<int>(); 
 
         for (const auto& item : ingredients) {
+            if (item.grams <= 0) {
+                std::cerr << "Error: ingredient grams must be positive." << std::endl;
+                return false; 
+            }
+
             pqxx::params p_item;
             p_item.append(dish_id);
             p_item.append(item.id);
             p_item.append(item.grams);
 
-            W.exec( 
-                "INSERT INTO \"Dish_Ingredient\" (dish_id, ing_id, grams) VALUES ($1, $2, $3)", p_item);
+            W.exec("INSERT INTO \"Dish_Ingredient\" (dish_id, ing_id, grams) VALUES ($1, $2, $3)", p_item);
         }
         return true;
     }

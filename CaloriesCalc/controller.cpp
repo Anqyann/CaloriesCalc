@@ -7,9 +7,8 @@
 
 #include <iostream>
 
-App_controller::App_controller(pqxx::connection& C) : m_conn(C) {
-   
-}
+//constructor
+App_controller::App_controller(pqxx::connection& C) : m_conn(C) {}
 
 void App_controller::run() {
     
@@ -17,15 +16,13 @@ void App_controller::run() {
 }
 
 //menu handlers
-
 void App_controller::handle_main_menu() {
-    bool running = true;
-    while (running) {
+    while (1) {
         int choice = m_view.show_main_menu(); 
         switch (choice) {
         case 1: handle_login(); break;
         case 2: handle_register(); break;
-        case 3: running = false; break;
+        case 3: break;
         default: m_view.show_error("Invalid choice.");
         }
     }
@@ -36,9 +33,7 @@ void App_controller::handle_user_menu() {
         m_view.show_error("Not logged in!");
         return;
     }
-
-    bool running = true;
-    while (running) {
+    while (1) {
         int choice = m_view.show_user_menu(m_current_user->name);
         switch (choice) {
         case 1: handle_set_target(); break;
@@ -47,7 +42,6 @@ void App_controller::handle_user_menu() {
         case 4: handle_log_meal(); break;
         case 5: handle_show_summary(); break;
         case 6:
-            running = false;
             m_current_user.reset(); 
             m_view.show_message("Logged out.");
             break;
@@ -251,7 +245,6 @@ void App_controller::handle_show_summary() {
 
 
 //controller helpers
-
 double App_controller::calculate_maintenance_calories(const User_data& user) {
     double bmr = (10 * user.weight) + (6.25 * user.height) - (5 * user.age);
     bmr += (user.sex == "Male" ? 5 : -161);
