@@ -1,0 +1,44 @@
+name: C++ Build and Release
+
+on:
+  push:
+    branches: [ "main" ] #
+    tags:
+      - 'v*' 
+
+permissions:
+  contents: write 
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+
+    - name: Anna Idolova
+      run: |
+        echo "Build initiated by user: ${{ github.actor }}"
+        echo "Commit message: ${{ github.event.head_commit.message }}"
+
+    - name: Create Build Directory
+      run: mkdir -p build
+
+    - name: Compile C++ Code
+      run: |
+        g++ main.cpp -o build/hello-world-app
+        echo "Compilation successful"
+
+    - name: Verify Build
+      run: ./build/hello-world-app
+
+    - name: Create GitHub Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: build/hello-world-app 
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
